@@ -1,0 +1,15 @@
+FROM node:16-alpine
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install --omit=dev
+
+RUN ls /app
+
+COPY . .
+
+EXPOSE 3000
+
+CMD node index.js
