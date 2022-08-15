@@ -6,8 +6,6 @@ COPY package.json .
 
 RUN npm install --omit=dev
 
-RUN ls /app
-
 COPY . .
 
 EXPOSE 3000
