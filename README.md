@@ -62,3 +62,8 @@ service/metrics-server created
 deployment.apps/metrics-server created
 apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
 
+
+kubectl get deployment metrics-server -n kube-system
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+metrics-server   0/1     1            0           16s
+
