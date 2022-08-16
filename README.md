@@ -52,7 +52,7 @@ e0731642d6ea: Pushed
 
 ## How to deploy the application in Kubernates
 ### 1. Create namespace in kubernates
-Namespace is dedicated spce or environment to deploy the application into kubernates. 
+Namespace is dedicated space or environment to deploy the application into kubernates. 
 ```
 kubectl create ns app
 namespace/app created
