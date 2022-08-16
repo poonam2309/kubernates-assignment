@@ -5,13 +5,13 @@ Deploy Nodejs application in kubernates
 
 
 
-[ec2-user@ip-172-31-43-105 ~]$ aws ecr-public get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin public.ecr.aws/p6z1k1w3
+```[ec2-user@ip-172-31-43-105 ~]$ aws ecr-public get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin public.ecr.aws/p6z1k1w3
 WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
 Configure a credential helper to remove this warning. See
 https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 
 Login Succeeded
-
+```
 sudo docker tag nodeapp:latest public.ecr.aws/p6z1k1w3/kubernates:latest
 [ec2-user@ip-172-31-43-105 ~]$ sudo docker tag nodeapp:1.0 public.ecr.aws/p6z1k1w3/nodeapp:1.0
 [ec2-user@ip-172-31-43-105 ~]$ docker push public.ecr.aws/p6z1k1w3/nodeapp:1.0
