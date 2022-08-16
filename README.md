@@ -4,9 +4,10 @@ This Nodejs application is deployed on AWS Elastic Kubernates Service
 The AWS EKS service is created using ekctl command.
 
 
-### Login into ECR public repository
+### Login into ECR public repository 
+First login into AWS public repository to push the docker image for deployement creation in EKS.
 ```
-[ec2-user@ip-172-31-43-105 ~]$ aws ecr-public get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin public.ecr.aws/p6z1k1w3
+[ec2-user@ip-172-31-43-105 ~]$ aws ecr-public get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin public.ecr.aws/p6z1k167
 WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
 Configure a credential helper to remove this warning. See
 https://docs.docker.com/engine/reference/commandline/login/#credentials-store
@@ -15,7 +16,7 @@ Login Succeeded
 ```
 
 ### Build Docker image
-Change directory into nodeapp and execute the below command to run the docker image.
+Change directory into nodeapp and execute the below command to run the docker image. 
 ```
 sudo docker build -t nodeapp:1.0 .
 ```
@@ -23,7 +24,7 @@ sudo docker build -t nodeapp:1.0 .
 ```
 [ec2-user@ip-172-31-43-105 ~]$ sudo docker images
 REPOSITORY                           TAG         IMAGE ID       CREATED        SIZE
-public.ecr.aws/p6z1k1w3/nodeapp      1.0         a485cec7d6f6   40 hours ago   114MB
+public.ecr.aws/p6z1k167/nodeapp      1.0         a485cec7d6f6   40 hours ago   114MB
 nodeapp                              1.0         a485cec7d6f6   40 hours ago   114MB
 node                                 16-alpine   b1ca7421d2e7   6 days ago     112MB
 ```
@@ -31,10 +32,10 @@ node                                 16-alpine   b1ca7421d2e7   6 days ago     1
 ### Tag and Push docker image
 
 ```
-[ec2-user@ip-172-31-43-105 ~]$ sudo docker tag nodeapp:1.0 public.ecr.aws/p6z1k1w3/nodeapp:1.0
+[ec2-user@ip-172-31-43-105 ~]$ sudo docker tag nodeapp:1.0 public.ecr.aws/p6z1k167/nodeapp:1.0
 
-[ec2-user@ip-172-31-43-105 ~]$ sudo docker push public.ecr.aws/p6z1k1w3/nodeapp:1.0
-The push refers to repository [public.ecr.aws/p6z1k1w3/nodeapp]
+[ec2-user@ip-172-31-43-105 ~]$ sudo docker push public.ecr.aws/p6z1k167/nodeapp:1.0
+The push refers to repository [public.ecr.aws/p6z1k167/nodeapp]
 db93e2d9b1f9: Pushed 
 de66896f030b: Pushed 
 abfac3482920: Pushed 
@@ -46,19 +47,21 @@ e0731642d6ea: Pushed
 1.0: digest: sha256:cb39c9024fde4bcefe92bf1d04cadf9240a05a658adb6ac199103863a1233c20 size: 1990
 ```
 
-### Create namespace in kubernates
+## How to deploy the application in Kubernates
+### 1. Create namespace in kubernates
+Namespace is dedicated spce or environment to deploy the application into kubernates. 
 ```
 kubectl create ns app
 namespace/app created
 ```
-#### Create Deployment of Application
-
+#### 2. Create Deployment of Application
+In Kubernetes, a deployment is a method of launching a pod with containerized applications and ensuring that the necessary number of replicas is always running on the cluster.
 ```
-[ec2-user@ip-172-31-43-105 ~]$ kubectl create deployment nodeapp --image=public.ecr.aws/p6z1k1w3/nodeapp:1.0 --namespace app
+[ec2-user@ip-172-31-43-105 ~]$ kubectl create deployment nodeapp --image=public.ecr.aws/p6z1k167/nodeapp:1.0 --namespace app
 deployment.apps/nodeapp created
 ```
 
-### Verify deployment
+#### Verify deployments
 
 ```
 kubectl get pods --namespace app
@@ -66,15 +69,30 @@ NAME                       READY   STATUS    RESTARTS   AGE
 nodeapp-67b8f5bff7-gpdkm   1/1     Running   0          115s
 ```
 
-### Create service for traffic distribution
-
+### 3. Create service for pod interface
+A service is responsible for exposing an interface to those pods, which enables network access from either within the cluster or between external processes and the service.
 ```
 kubectl expose deployment nodeapp --port 3000 -n app 
 service/nodeapp created
 ```
-###
+
+#### verify the created service
+```
+[ec2-user@ip-172-31-43-105 ~]$ kubectl get svc -n app
+NAME      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+nodeapp   ClusterIP   10.100.69.139   <none>        3000/TCP   22h
+```
+
+### 4. Create ingress to access the traffic from outside world
+AWS Load Balancer Controller used to create the ingress that helps to manage Elastic Load Balancers for a Kubernetes cluster.
 
 
+#### verify loadbalancer
+```
+[ec2-user@ip-172-31-43-105 ~]$ kubectl get ingress -n app
+NAME      CLASS   HOSTS   ADDRESS                                                             PORTS   AGE
+ingress   alb     *       k8s-app-ingress-cfa5f8ecd1-559609628.ap-south-1.elb.amazonaws.com   80      21h
+```
 
 ## Create metrices
  
@@ -114,4 +132,6 @@ ip-172-31-14-142.ap-south-1.compute.internal   60m          3%     598Mi        
 ip-172-31-20-160.ap-south-1.compute.internal   53m          2%     579Mi           17%    
 ```
 
+
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/67383223/184795127-8a6d1fc1-b0ed-4b12-84a7-662600b8730e.png">
 
