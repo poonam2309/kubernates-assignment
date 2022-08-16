@@ -148,3 +148,11 @@ Hit the application url in browser and verify the response of nodeapp service.
 <kbd>
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/67383223/184795127-8a6d1fc1-b0ed-4b12-84a7-662600b8730e.png">
 </kbd>
+
+### Make an samll image 
+Multi-stage builds, where usually only the layers in the final image are pushed, or when an image is squashed to a single layer.Each instruction in the Dockerfile adds a layer to the image, and we need to remember to clean up any artifacts we don’t need before moving on to the next layer. 
+
+This application was very small application without build functionality but we can utilise the below feature to make samll image.
+Before multi-stage build, Docker users would use a script to compile the applications on the host machine, then use Dockerfiles to build the images.
+
+Ref Link https://docs.docker.com/develop/develop-images/multistage-build/
