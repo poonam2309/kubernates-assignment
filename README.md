@@ -24,6 +24,23 @@ git clone
 cd kubernates-assignment/nodeapp 
 ls 
 Dockerfile  index.js  package.json
+npm install 
+[ec2-user@ip-172-31-43-105 nodeapp]$ npm install
+express@4.18.1 node_modules/express
+├── escape-html@1.0.3
+├── array-flatten@1.1.1
+.....
+├── type-is@1.6.18 (media-typer@0.3.0, mime-types@2.1.35)
+└── body-parser@1.20.0 (destroy@1.2.0, unpipe@1.0.0, bytes@3.1.2, raw-body@2.5.1, iconv-lite@0.4.24)
+
+```
+#### verify the dependencies downloaded or not
+```
+[ec2-user@ip-172-31-43-105 nodeapp]$ ls
+Dockerfile  index.js  node_modules  package.json
+[ec2-user@ip-172-31-43-105 nodeapp]$ ls node_modules/
+express
+```
 
 
 Change directory into nodeapp and execute the below command to run the docker image. 
