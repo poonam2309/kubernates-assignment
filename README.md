@@ -1,5 +1,5 @@
 # kubernates-assignment
-This assignment contains the Nodejs application which deployed on AWS Elastic Kubernates Service. As per the assignment the node application will return the timestamp and hostname of the pod after hitting the url. 
+This assignment contains the Nodejs application which deployed on AWS Elastic Kubernetes Service. As per the assignment the node application will return the timestamp and hostname of the pod after hitting the url. 
 
 The AWS EKS service is created using ekctl command. The following blog is followed to create the EKS service.
 
