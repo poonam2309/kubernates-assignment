@@ -1,7 +1,9 @@
 # kubernates-assignment
-This Nodejs application is deployed on AWS Elastic Kubernates Service
+This assignment contains the Nodejs application which deployed on AWS Elastic Kubernates Service. As per the assignment the node application will return the timestamp and hostname of the pod after hitting the url. 
 
-The AWS EKS service is created using ekctl command.
+The AWS EKS service is created using ekctl command. The following blog is followed to create the EKS service.
+
+https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
 
 
 ### Login into ECR public repository 
@@ -30,6 +32,7 @@ node                                 16-alpine   b1ca7421d2e7   6 days ago     1
 ```
 
 ### Tag and Push docker image
+Docker tag and push is used to push images into ECR public registry 
 
 ```
 [ec2-user@ip-172-31-43-105 ~]$ sudo docker tag nodeapp:1.0 public.ecr.aws/p6z1k167/nodeapp:1.0
@@ -85,6 +88,9 @@ nodeapp   ClusterIP   10.100.69.139   <none>        3000/TCP   22h
 
 ### 4. Create ingress to access the traffic from outside world
 AWS Load Balancer Controller used to create the ingress that helps to manage Elastic Load Balancers for a Kubernetes cluster. Create ingress.yaml file with aws lb class.
+The following blog is used to configure the ALB
+
+https://aws.amazon.com/premiumsupport/knowledge-center/eks-alb-ingress-aws-waf
 
 ``` 
 kubectl create -f ingress.yaml
@@ -98,10 +104,10 @@ ingress   alb     *       k8s-app-ingress-cfa5f8ecd1-559609628.ap-south-1.elb.am
 ```
 
 ## Create metrices
-
-
+The Kubernetes Metrics Server is an aggregator of resource usage data in your cluster.The Metrics Server is also used by other Kubernetes add ons, such as the Horizontal Pod Autoscaler or the Kubernetes Dashboard. 
+Deploy the Metrics Server with the following command.
 ```
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml 
+kubectl apply -f components.yaml 
 serviceaccount/metrics-server created
 clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
 clusterrole.rbac.authorization.k8s.io/system:metrics-server created
@@ -114,13 +120,14 @@ apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
 ```
 
 ### Verify metrices applied or not
-
+Verify that the metrics-server deployment is running the desired number of pods with the following command.
 ``` 
 kubectl get deployment metrics-server -n kube-system
 NAME             READY   UP-TO-DATE   AVAILABLE   AGE
 metrics-server   0/1     1            0           16s
 ```
 ### Check pod metrices
+Once Metrics Server is deployed, we can query the Metrics API to retrieve current metrics from any node or pod using the below commands. 
 
 ```
 kubectl top pods -n app
@@ -136,7 +143,8 @@ ip-172-31-14-142.ap-south-1.compute.internal   60m          3%     598Mi        
 ip-172-31-20-160.ap-south-1.compute.internal   53m          2%     579Mi           17%    
 ```
 
-### 
+### Verify the nodeapplication is returning the response or not 
+Hit the application url in browser and verify the response of nodeapp service.
 <kbd>
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/67383223/184795127-8a6d1fc1-b0ed-4b12-84a7-662600b8730e.png">
 </kbd>
