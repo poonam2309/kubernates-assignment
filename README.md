@@ -1,11 +1,10 @@
 # kubernates-assignment
-This application is 
-Deploy Nodejs application in kubernates
+This Nodejs application is deployed on AWS Elastic Kubernates Service
+
+The AWS EKS service is created using ekctl command.
 
 
-
-
-
+### Login into ECR public repository
 ```[ec2-user@ip-172-31-43-105 ~]$ aws ecr-public get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin public.ecr.aws/p6z1k1w3
 WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
 Configure a credential helper to remove this warning. See
@@ -13,7 +12,10 @@ https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 
 Login Succeeded
 ```
+
 ### Build Docker image
+
+```sudo docker build -t nodeapp:1.0 .```
 
 
 ### Tag and Push docker image
