@@ -60,7 +60,8 @@ service/nodeapp created
 
 
 ## Create metrices
- kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml 
+ 
+```kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml 
 serviceaccount/metrics-server created
 clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
 clusterrole.rbac.authorization.k8s.io/system:metrics-server created
@@ -70,6 +71,7 @@ clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
 service/metrics-server created
 deployment.apps/metrics-server created
 apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+```
 
 ### Verify metrices applied or not
 
