@@ -13,10 +13,13 @@ https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 
 Login Succeeded
 ```
-sudo docker tag nodeapp:latest public.ecr.aws/p6z1k1w3/kubernates:latest
+### Build Docker image
+
+
+### Tag and Push docker image
+
+```sudo docker tag nodeapp:latest public.ecr.aws/p6z1k1w3/kubernates:latest
 [ec2-user@ip-172-31-43-105 ~]$ sudo docker tag nodeapp:1.0 public.ecr.aws/p6z1k1w3/nodeapp:1.0
-[ec2-user@ip-172-31-43-105 ~]$ docker push public.ecr.aws/p6z1k1w3/nodeapp:1.0
-Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/images/public.ecr.aws/p6z1k1w3/nodeapp/push?tag=1.0": dial unix /var/run/docker.sock: connect: permission denied
 [ec2-user@ip-172-31-43-105 ~]$ sudo docker push public.ecr.aws/p6z1k1w3/nodeapp:1.0
 The push refers to repository [public.ecr.aws/p6z1k1w3/nodeapp]
 db93e2d9b1f9: Pushed 
@@ -28,6 +31,7 @@ e0731642d6ea: Pushed
 47033e75bc75: Pushed 
 994393dc58e7: Pushed 
 1.0: digest: sha256:cb39c9024fde4bcefe92bf1d04cadf9240a05a658adb6ac199103863a1233c20 size: 1990
+```
 
 ### Create namespace in kubernates
 ```kubectl create ns app
