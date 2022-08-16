@@ -84,8 +84,11 @@ nodeapp   ClusterIP   10.100.69.139   <none>        3000/TCP   22h
 ```
 
 ### 4. Create ingress to access the traffic from outside world
-AWS Load Balancer Controller used to create the ingress that helps to manage Elastic Load Balancers for a Kubernetes cluster.
+AWS Load Balancer Controller used to create the ingress that helps to manage Elastic Load Balancers for a Kubernetes cluster. Create ingress.yaml file with aws lb class.
 
+``` 
+kubectl create -f ingress.yaml
+```
 
 #### verify loadbalancer
 ```
@@ -95,7 +98,8 @@ ingress   alb     *       k8s-app-ingress-cfa5f8ecd1-559609628.ap-south-1.elb.am
 ```
 
 ## Create metrices
- 
+
+
 ```
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml 
 serviceaccount/metrics-server created
@@ -132,6 +136,7 @@ ip-172-31-14-142.ap-south-1.compute.internal   60m          3%     598Mi        
 ip-172-31-20-160.ap-south-1.compute.internal   53m          2%     579Mi           17%    
 ```
 
+### 
 <kbd>
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/67383223/184795127-8a6d1fc1-b0ed-4b12-84a7-662600b8730e.png">
 </kbd>
