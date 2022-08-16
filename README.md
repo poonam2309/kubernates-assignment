@@ -18,6 +18,14 @@ Login Succeeded
 ```
 
 ### Build Docker image
+Clone the code into local machinewhere docker command is supported. 
+```
+git clone 
+cd kubernates-assignment/nodeapp 
+ls 
+Dockerfile  index.js  package.json
+
+
 Change directory into nodeapp and execute the below command to run the docker image. 
 ```
 sudo docker build -t nodeapp:1.0 .
