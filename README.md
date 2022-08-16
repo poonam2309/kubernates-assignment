@@ -1,4 +1,5 @@
 # kubernates-assignment
+This application is 
 Deploy Nodejs application in kubernates
 
 
@@ -28,26 +29,30 @@ e0731642d6ea: Pushed
 994393dc58e7: Pushed 
 1.0: digest: sha256:cb39c9024fde4bcefe92bf1d04cadf9240a05a658adb6ac199103863a1233c20 size: 1990
 
-
-kubectl create ns app
+### Create namespace in kubernates
+```kubectl create ns app
 namespace/app created
+```
+#### Create Deployment of Application
 
-[ec2-user@ip-172-31-43-105 ~]$ kubectl create deployment nodeapp --image=public.ecr.aws/p6z1k1w3/nodeapp:1.0 --namespace app
+```[ec2-user@ip-172-31-43-105 ~]$ kubectl create deployment nodeapp --image=public.ecr.aws/p6z1k1w3/nodeapp:1.0 --namespace app
 deployment.apps/nodeapp created
+```
 
- kubectl get pods --namespace app
+### Verify deployment
+
+```kubectl get pods --namespace app
 NAME                       READY   STATUS    RESTARTS   AGE
 nodeapp-67b8f5bff7-gpdkm   1/1     Running   0          115s
+```
 
+### Create service for traffic distribution
 
-kubectl top pods -n app
-NAME                       CPU(cores)   MEMORY(bytes)   
-nodeapp-67b8f5bff7-bc52n   1m           14Mi            
-nodeapp-67b8f5bff7-gpdkm   1m           14Mi            
-[ec2-user@ip-172-31-43-105 kubernates-assignment]$ kubectl top nodes -n app
-NAME                                           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
-ip-172-31-14-142.ap-south-1.compute.internal   60m          3%     598Mi           17%       
-ip-172-31-20-160.ap-south-1.compute.internal   53m          2%     579Mi           17%    
+```kubectl expose deployment nodeapp --port 3000 -n app 
+service/nodeapp created
+```
+###
+
 
 
 ## Create metrices
@@ -62,8 +67,27 @@ service/metrics-server created
 deployment.apps/metrics-server created
 apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
 
+### Verify metrices applied or not
 
+``` 
 kubectl get deployment metrics-server -n kube-system
 NAME             READY   UP-TO-DATE   AVAILABLE   AGE
 metrics-server   0/1     1            0           16s
+```
+### Check pod metrices
+
+```
+kubectl top pods -n app
+NAME                       CPU(cores)   MEMORY(bytes)   
+nodeapp-67b8f5bff7-bc52n   1m           14Mi            
+nodeapp-67b8f5bff7-gpdkm   1m           14Mi       
+```
+### Check node metrices
+```
+[ec2-user@ip-172-31-43-105 kubernates-assignment]$ kubectl top nodes -n app
+NAME                                           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+ip-172-31-14-142.ap-south-1.compute.internal   60m          3%     598Mi           17%       
+ip-172-31-20-160.ap-south-1.compute.internal   53m          2%     579Mi           17%    
+```
+
 
