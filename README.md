@@ -5,7 +5,8 @@ The AWS EKS service is created using ekctl command.
 
 
 ### Login into ECR public repository
-```[ec2-user@ip-172-31-43-105 ~]$ aws ecr-public get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin public.ecr.aws/p6z1k1w3
+```
+[ec2-user@ip-172-31-43-105 ~]$ aws ecr-public get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin public.ecr.aws/p6z1k1w3
 WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
 Configure a credential helper to remove this warning. See
 https://docs.docker.com/engine/reference/commandline/login/#credentials-store
@@ -14,14 +15,24 @@ Login Succeeded
 ```
 
 ### Build Docker image
-
-```sudo docker build -t nodeapp:1.0 .```
-
+Change directory into nodeapp and execute the below command to run the docker image.
+```
+sudo docker build -t nodeapp:1.0 .
+```
+### Verify docker images
+```
+[ec2-user@ip-172-31-43-105 ~]$ sudo docker images
+REPOSITORY                           TAG         IMAGE ID       CREATED        SIZE
+public.ecr.aws/p6z1k1w3/nodeapp      1.0         a485cec7d6f6   40 hours ago   114MB
+nodeapp                              1.0         a485cec7d6f6   40 hours ago   114MB
+node                                 16-alpine   b1ca7421d2e7   6 days ago     112MB
+```
 
 ### Tag and Push docker image
 
-```sudo docker tag nodeapp:latest public.ecr.aws/p6z1k1w3/kubernates:latest
+```
 [ec2-user@ip-172-31-43-105 ~]$ sudo docker tag nodeapp:1.0 public.ecr.aws/p6z1k1w3/nodeapp:1.0
+
 [ec2-user@ip-172-31-43-105 ~]$ sudo docker push public.ecr.aws/p6z1k1w3/nodeapp:1.0
 The push refers to repository [public.ecr.aws/p6z1k1w3/nodeapp]
 db93e2d9b1f9: Pushed 
@@ -36,25 +47,29 @@ e0731642d6ea: Pushed
 ```
 
 ### Create namespace in kubernates
-```kubectl create ns app
+```
+kubectl create ns app
 namespace/app created
 ```
 #### Create Deployment of Application
 
-```[ec2-user@ip-172-31-43-105 ~]$ kubectl create deployment nodeapp --image=public.ecr.aws/p6z1k1w3/nodeapp:1.0 --namespace app
+```
+[ec2-user@ip-172-31-43-105 ~]$ kubectl create deployment nodeapp --image=public.ecr.aws/p6z1k1w3/nodeapp:1.0 --namespace app
 deployment.apps/nodeapp created
 ```
 
 ### Verify deployment
 
-```kubectl get pods --namespace app
+```
+kubectl get pods --namespace app
 NAME                       READY   STATUS    RESTARTS   AGE
 nodeapp-67b8f5bff7-gpdkm   1/1     Running   0          115s
 ```
 
 ### Create service for traffic distribution
 
-```kubectl expose deployment nodeapp --port 3000 -n app 
+```
+kubectl expose deployment nodeapp --port 3000 -n app 
 service/nodeapp created
 ```
 ###
@@ -63,7 +78,8 @@ service/nodeapp created
 
 ## Create metrices
  
-```kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml 
+```
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml 
 serviceaccount/metrics-server created
 clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
 clusterrole.rbac.authorization.k8s.io/system:metrics-server created
